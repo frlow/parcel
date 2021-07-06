@@ -292,6 +292,9 @@ export class AssetGraphBuilder {
       // Symbols that have to be namespace reexported by outgoingDeps.
       let namespaceReexportedSymbols = new Set<Symbol>();
 
+      // Symbols that were satisfied with the * symbol
+      let fallbackSymbols = new Set<Symbol>();
+
       if (incomingDeps.length === 0) {
         // Root in the runtimes Graph
         assetNode.usedSymbols.add('*');
@@ -316,6 +319,7 @@ export class AssetGraphBuilder {
               // Also add '*' since this is a fallback based on the namespace (e.g. non-static CJS exports)
               assetNode.usedSymbols.add(exportSymbol);
               assetNode.usedSymbols.add('*');
+              fallbackSymbols.add('*');
             }
             // A namespace reexport
             // (but only if we actually have namespace-exporting outgoing dependencies,
